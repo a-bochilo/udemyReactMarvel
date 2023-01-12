@@ -2,46 +2,33 @@ import { useEffect, useState } from "react";
 
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 
 import "./randomChar.scss";
 import mjolnir from "../../resources/img/mjolnir.png";
 
 const RandomChar = () => {
     const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    const marvelService = new MarvelService();
+    const { loading, error, getCharacter } = useMarvelService();
 
     useEffect(() => {
         updateChar();
-    }, []);
+    }, []); // eslint-disable-line
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false);
-        setError(false);
-    };
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
     };
 
     const updateChar = () => {
-        setChar({});
-        setLoading(true);
-        setError(false);
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        marvelService.getCharacter(id).then(onCharLoaded).catch(onError);
+        getCharacter(id).then(onCharLoaded);
     };
 
     return (
         <div className="randomchar">
             {error && <ErrorMessage />}
             {loading && <Spinner />}
-            {!(loading || error) && <View char={char} />}
+            {!(loading || error) && char.name && <View char={char} />}
             <div className="randomchar__static">
                 <p className="randomchar__title">
                     Random character for today!

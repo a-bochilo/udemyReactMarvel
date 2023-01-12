@@ -19,7 +19,7 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
 
     useEffect(() => {
         getCharList();
-    }, []);
+    }, []); // eslint-disable-line
 
     const onCharListLoaded = (extraCharList) => {
         setChars((chars) => [...chars, ...extraCharList]);

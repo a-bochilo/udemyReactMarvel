@@ -13,7 +13,7 @@ const useMarvelService = () => {
                 _baseOffset + offset
             }&${_apiKey}`
         );
-        return res.data.results.map(this._transformCharacter);
+        return res.data.results.map(_transformCharacter);
     };
 
     const getCharacter = async (id) => {

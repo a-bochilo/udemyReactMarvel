@@ -15,7 +15,7 @@ const CharInfo = ({ selectedChar }) => {
 
     const marvelService = new MarvelService();
 
-    useEffect(() => updateChar(), [selectedChar]);
+    useEffect(() => updateChar(), [selectedChar]); // eslint-disable-line
 
     const updateChar = () => {
         if (!selectedChar) {
