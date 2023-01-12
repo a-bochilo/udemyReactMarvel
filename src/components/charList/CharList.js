@@ -9,37 +9,26 @@ import "./charList.scss";
 
 const CharList = ({ setSelectedChar, selectedChar }) => {
     const [chars, setChars] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [extraLoading, setExtraLoading] = useState(false);
-    const [error, setError] = useState(false);
     const [offset, setOffset] = useState(0);
     const [listOver, setListOver] = useState(false);
 
-    const marvelService = new useMarvelService();
+    const { loading, error, getAllCharacters } = useMarvelService();
 
     useEffect(() => {
-        getCharList();
+        getCharList(offset, true);
     }, []); // eslint-disable-line
 
     const onCharListLoaded = (extraCharList) => {
         setChars((chars) => [...chars, ...extraCharList]);
-        setLoading(false);
         setExtraLoading(false);
         setOffset((offset) => offset + 9);
         setListOver(extraCharList.length < 9 ? true : false);
     };
 
-    const onError = () => {
-        setLoading(false);
-        setError(true);
-    };
-
-    const getCharList = (offset) => {
-        setExtraLoading(true);
-        marvelService
-            .getAllCharacters(offset)
-            .then(onCharListLoaded)
-            .catch(onError);
+    const getCharList = (offset, initial) => {
+        initial ? setExtraLoading(false) : setExtraLoading(true);
+        getAllCharacters(offset).then(onCharListLoaded);
     };
 
     const showCharList = (chars) => {
@@ -75,9 +64,9 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
 
     return (
         <div className="char__list">
-            {!(loading || error) && showCharList(chars)}
-            {loading && <Spinner />}
+            {loading && !extraLoading && <Spinner />}
             {error && <ErrorMessage />}
+            {showCharList(chars)}
             <button
                 onClick={() => getCharList(offset)}
                 disabled={extraLoading}
