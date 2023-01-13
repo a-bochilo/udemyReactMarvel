@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -10,11 +10,15 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [extraLoading, setExtraLoading] = useState(true);
     const [islistOver, setListOver] = useState(false);
+    const isFirstRender = useRef(true);
 
     const { loading, error, getAllComics } = useMarvelService();
 
     useEffect(() => {
-        getComicsList(true);
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            getComicsList(true);
+        }
     }, []); // eslint-disable-line
 
     const getComicsList = (isInitial) => {
@@ -53,8 +57,6 @@ const ComicsList = () => {
         });
         return <ul className="comics__grid">{comics}</ul>;
     };
-
-    console.log("render");
 
     return (
         <div className="comics__list">

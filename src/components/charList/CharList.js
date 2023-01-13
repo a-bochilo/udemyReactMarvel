@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropType from "prop-types";
 
 import useMarvelService from "../../services/MarvelService";
@@ -12,11 +12,15 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
     const [extraLoading, setExtraLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [islistOver, setListOver] = useState(false);
+    const isFirstRender = useRef(true);
 
     const { loading, error, getAllCharacters } = useMarvelService();
 
     useEffect(() => {
-        getCharList(offset, true);
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            getCharList(true);
+        }
     }, []); // eslint-disable-line
 
     const onCharListLoaded = (extraCharList) => {
@@ -26,7 +30,7 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
         setListOver(extraCharList.length < 9 ? true : false);
     };
 
-    const getCharList = (offset, initial) => {
+    const getCharList = (initial) => {
         initial ? setExtraLoading(false) : setExtraLoading(true);
         getAllCharacters(offset).then(onCharListLoaded);
     };
