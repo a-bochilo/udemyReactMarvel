@@ -53,10 +53,11 @@ const useMarvelService = () => {
             title: comics.title,
             description: comics.description,
             pageCount: comics.pageCount,
-            price: comics.prices[0].price,
-            thumbnail: comics.thumbnail.path + "." + comics.thumbnail.extension,
-            homepage: comics.urls[0].url,
-            language: comics.textObjects[0].language,
+            price: comics.prices[0]?.price,
+            thumbnail:
+                comics.thumbnail?.path + "." + comics.thumbnail?.extension,
+            homepage: comics.urls[0]?.url,
+            language: comics.textObjects[0]?.language,
         };
     };
 

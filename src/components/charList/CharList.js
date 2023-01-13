@@ -11,7 +11,7 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
     const [chars, setChars] = useState([]);
     const [extraLoading, setExtraLoading] = useState(false);
     const [offset, setOffset] = useState(0);
-    const [listOver, setListOver] = useState(false);
+    const [islistOver, setListOver] = useState(false);
 
     const { loading, error, getAllCharacters } = useMarvelService();
 
@@ -68,10 +68,10 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
             {error && <ErrorMessage />}
             {showCharList(chars)}
             <button
-                onClick={() => getCharList(offset)}
+                onClick={() => getCharList(offset, false)}
                 disabled={extraLoading}
                 className="button button__main button__long"
-                style={listOver ? { display: "none" } : null}
+                style={islistOver ? { display: "none" } : null}
             >
                 <div className="inner">load more</div>
             </button>

@@ -1,27 +1,71 @@
+import { useState, useEffect } from "react";
+
+import useMarvelService from "../../services/MarvelService";
+import Spinner from "../spinner/Spinner";
+
 import "./comicsList.scss";
-import uw from "../../resources/img/UW.png";
-import xMen from "../../resources/img/x-men.png";
 
 const ComicsList = () => {
-    return (
-        <div className="comics__list">
-            <ul className="comics__grid">
-                <li className="comics__item">
-                    {/* eslint-disable-next-line */}
-                    <a href="#">
+    const [comicsList, setComicsList] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const [extraLoading, setExtraLoading] = useState(true);
+    const [islistOver, setListOver] = useState(false);
+
+    const { loading, error, getAllComics } = useMarvelService();
+
+    useEffect(() => {
+        getComicsList(true);
+    }, []); // eslint-disable-line
+
+    const getComicsList = (isInitial) => {
+        isInitial ? setExtraLoading(false) : setExtraLoading(true);
+        getAllComics(offset).then(onComicsListLoaded);
+    };
+
+    const onComicsListLoaded = (extraList) => {
+        setComicsList((comicsList) => [...comicsList, ...extraList]);
+        setExtraLoading(false);
+        setOffset((offset) => offset + 8);
+        setListOver(extraList.length < 8 ? true : false);
+    };
+
+    const showComicsList = (comicsList) => {
+        const comics = comicsList.map((comicsItem) => {
+            const { id, title, price, thumbnail, homepage } = comicsItem;
+            return (
+                <li key={id} className="comics__item">
+                    <a href={homepage}>
                         <img
-                            src={uw}
-                            alt="comicsimg"
+                            src={thumbnail}
+                            alt="comics img"
                             className="comics__item-img"
+                            style={
+                                thumbnail.endsWith("image_not_available.jpg")
+                                    ? { objectFit: "contain" }
+                                    : null
+                            }
                         />
-                        <div className="comics__item-name">
-                            ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB
-                        </div>
-                        <div className="comics__item-price">9.99$</div>
+                        <div className="comics__item-name">{title}</div>
+                        <div className="comics__item-price">{price}$</div>
                     </a>
                 </li>
-            </ul>
-            <button className="button button__main button__long">
+            );
+        });
+        return <ul className="comics__grid">{comics}</ul>;
+    };
+
+    console.log("render");
+
+    return (
+        <div className="comics__list">
+            {loading && !error && !extraLoading && <Spinner />}
+            {showComicsList(comicsList)}
+            <button
+                onClick={() => getComicsList(false)}
+                disabled={extraLoading}
+                className="button button__main button__long"
+                style={islistOver ? { display: "none" } : null}
+            >
                 <div className="inner">load more</div>
             </button>
         </div>
