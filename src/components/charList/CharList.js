@@ -25,9 +25,9 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
 
     const onCharListLoaded = (extraCharList) => {
         setChars((chars) => [...chars, ...extraCharList]);
-        setExtraLoading(false);
         setOffset((offset) => offset + 9);
         setListOver(extraCharList.length < 9 ? true : false);
+        setExtraLoading(false);
     };
 
     const getCharList = (initial) => {
@@ -72,7 +72,7 @@ const CharList = ({ setSelectedChar, selectedChar }) => {
             {error && <ErrorMessage />}
             {showCharList(chars)}
             <button
-                onClick={() => getCharList(offset, false)}
+                onClick={() => getCharList(false)}
                 disabled={extraLoading}
                 className="button button__main button__long"
                 style={islistOver ? { display: "none" } : null}
