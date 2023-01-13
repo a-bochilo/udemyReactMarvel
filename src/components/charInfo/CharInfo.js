@@ -20,7 +20,6 @@ const CharInfo = ({ selectedChar }) => {
             return;
         }
 
-        setChar(null);
         clearError();
         getCharacter(selectedChar).then(setChar);
     };
