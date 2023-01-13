@@ -1,24 +1,34 @@
+import { Link, NavLink } from "react-router-dom";
 import "./appHeader.scss";
 
 const AppHeader = () => {
     return (
         <header className="app__header">
             <h1 className="app__title">
-                {/* eslint-disable-next-line */}
-                <a href="#">
+                <Link to="/">
                     <span>Marvel</span> information portal
-                </a>
+                </Link>
             </h1>
             <nav className="app__menu">
                 <ul>
                     <li>
-                        {/* eslint-disable-next-line */}
-                        <a href="#">Characters</a>
+                        <NavLink
+                            exact
+                            to="/"
+                            activeStyle={{ color: "#9f0013" }}
+                        >
+                            Characters
+                        </NavLink>
                     </li>
                     /
                     <li>
-                        {/* eslint-disable-next-line */}
-                        <a href="#">Comics</a>
+                        <NavLink
+                            exact
+                            to="/comics"
+                            activeStyle={{ color: "#9f0013" }}
+                        >
+                            Comics
+                        </NavLink>
                     </li>
                 </ul>
             </nav>

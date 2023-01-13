@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
@@ -10,11 +10,14 @@ import mjolnir from "../../resources/img/mjolnir.png";
 const RandomChar = () => {
     const [char, setChar] = useState({});
     const { loading, error, getCharacter, clearError } = useMarvelService();
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
-        updateChar();
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            updateChar();
+        }
         const timerId = setInterval(updateChar, 60000);
-
         return () => {
             clearInterval(timerId);
         };
