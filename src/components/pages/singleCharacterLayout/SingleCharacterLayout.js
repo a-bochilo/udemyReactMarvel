@@ -1,3 +1,5 @@
+import { Helmet } from "react-helmet";
+
 import "./singleCharacterLayout.scss";
 
 const SingleCharacterLayout = ({ data }) => {
@@ -5,6 +7,10 @@ const SingleCharacterLayout = ({ data }) => {
 
     return (
         <div className="single-comic">
+            <Helmet>
+                <meta name="description" content={`${name} comics character`} />
+                <title>{name} page (comics character)</title>
+            </Helmet>
             <img
                 src={thumbnail}
                 alt={name}

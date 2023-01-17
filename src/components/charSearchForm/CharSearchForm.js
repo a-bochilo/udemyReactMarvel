@@ -23,7 +23,7 @@ const CharSearchForm = () => {
         getCharacterByName(name).then(setChar);
     };
 
-    const results = !char ? null : char.length > 0 ? (
+     const results = !char ? null : char.length > 0 ? (
         <div className="char__search-wrapper">
             <div className="char__search-success">
                 There is! Visit {char[0].name} page?
